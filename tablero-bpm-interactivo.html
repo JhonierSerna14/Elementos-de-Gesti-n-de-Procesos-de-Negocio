@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablero BPM Interactivo - TechCorp Solutions</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.2);
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #f39c12;
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: #3498db;
+            border-radius: 2px;
+        }
+
+        .concepts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .concept-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .concept-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border-color: #3498db;
+        }
+
+        .concept-card.active {
+            border-color: #e74c3c;
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+        }
+
+        .concept-card.completed {
+            border-color: #27ae60;
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+        }
+
+        .card-header {
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .card-icon {
+            font-size: 2.5em;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .card-content h3 {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .card-content p {
+            color: #7f8c8d;
+            line-height: 1.5;
+        }
+
+        .card-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .card-details.expanded {
+            max-height: 800px;
+        }
+
+        .details-content {
+            padding: 25px;
+        }
+
+        .definition {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #2196f3;
+        }
+
+        .example {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 5px solid #9c27b0;
+        }
+
+        .interactive-demo {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 5px solid #ff9800;
+        }
+
+        .demo-button {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .demo-button:hover {
+            background: #f57c00;
+            transform: scale(1.05);
+        }
+
+        .completion-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #27ae60;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: bounceIn 0.5s ease;
+        }
+
+        .concept-card.completed .completion-badge {
+            display: flex;
+        }
+
+        .strategic-section {
+            margin-top: 50px;
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            border-radius: 15px;
+            padding: 30px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .benefit-item {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .benefit-item:hover {
+            transform: scale(1.05);
+        }
+
+        .case-study {
+            background: linear-gradient(135deg, #d299c2, #fef9d7);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .floating-stats {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(52, 152, 219, 0.9);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .reset-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .reset-button:hover {
+            background: #c0392b;
+            transform: scale(1.1);
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(52, 152, 219, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .process-flow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .flow-step {
+            text-align: center;
+            position: relative;
+            padding: 10px;
+        }
+
+        .flow-step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5em;
+            color: #3498db;
+            display: none;
+        }
+
+        /* Mostrar flechas solo en desktop */
+        @media (min-width: 992px) {
+            .process-flow {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .flow-step {
+                flex: 1;
+                padding: 0;
+            }
+            
+            .flow-step:not(:last-child)::after {
+                display: block;
+                right: -20px;
+                font-size: 2em;
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 2em;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        @media (max-width: 768px) {
+            .concepts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .floating-stats {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-bottom: 20px;
+            }
+            
+            .benefits-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+            }
+            
+            .strategic-section {
+                padding: 20px;
+            }
+            
+            .strategic-section h2 {
+                font-size: 1.5em;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            
+            .flow-step h4 {
+                font-size: 1.1em;
+                margin: 10px 0 5px 0;
+            }
+            
+            .flow-step p {
+                font-size: 0.9em;
+                color: #666;
+            }
+            
+            .flow-step small {
+                font-size: 0.8em;
+            }
+            
+            .flow-step:hover .flow-step > div {
+                transform: scale(1.05);
+            }
+            
+            .case-study {
+                padding: 20px;
+                margin-top: 20px;
+            }
+            
+            .case-study h2 {
+                font-size: 1.4em;
+                margin-bottom: 15px;
+            }
+            
+            .case-study ul {
+                margin-left: 15px;
+            }
+            
+            .case-study li {
+                margin-bottom: 8px;
+                font-size: 0.95em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-industry"></i> TechCorp Solutions - Tablero BPM</h1>
+            <p>Sistema Interactivo de Gestión de Procesos de Negocio</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p style="margin-top: 10px; font-size: 0.9em;">Progreso: <span id="progressText">0%</span></p>
+        </div>
+
+        <div class="floating-stats">
+            <div><i class="fas fa-check-circle"></i> Conceptos: <span id="completedCount">0</span>/13</div>
+        </div>
+
+        <div class="main-content">
+            <div class="section-title">
+                <i class="fas fa-cogs"></i> Elementos Fundamentales de BPM
+            </div>
+
+            <div class="concepts-grid" id="conceptsGrid">
+                <!-- Los conceptos se generarán dinámicamente con JavaScript -->
+            </div>
+
+            <div class="strategic-section">
+                <h2><i class="fas fa-rocket"></i> Planteamientos Estratégicos de BPM</h2>
+                <div class="process-flow" id="strategicFlow">
+                    <div class="flow-step" onclick="showStrategyModal('bpr')">
+                        <div style="background: #e74c3c; color: white; padding: 15px; border-radius: 50%; margin: 0 auto 10px; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.3s ease;">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h4>BPR</h4>
+                        <p>Reingeniería</p>
+                        <small style="color: #666; font-style: italic;">Haz clic para más info</small>
+                    </div>
+                    <div class="flow-step" onclick="showStrategyModal('kaizen')">
+                        <div style="background: #f39c12; color: white; padding: 15px; border-radius: 50%; margin: 0 auto 10px; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.3s ease;">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h4>Kaizen</h4>
+                        <p>Mejora Continua</p>
+                        <small style="color: #666; font-style: italic;">Haz clic para más info</small>
+                    </div>
+                    <div class="flow-step" onclick="showStrategyModal('bpa')">
+                        <div style="background: #27ae60; color: white; padding: 15px; border-radius: 50%; margin: 0 auto 10px; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.3s ease;">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h4>BPA</h4>
+                        <p>Automatización</p>
+                        <small style="color: #666; font-style: italic;">Haz clic para más info</small>
+                    </div>
+                    <div class="flow-step" onclick="showStrategyModal('monitoreo')">
+                        <div style="background: #9b59b6; color: white; padding: 15px; border-radius: 50%; margin: 0 auto 10px; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.3s ease;">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h4>Monitoreo</h4>
+                        <p>Control</p>
+                        <small style="color: #666; font-style: italic;">Haz clic para más info</small>
+                    </div>
+                </div>
+
+                <div class="benefits-grid">
+                    <div class="benefit-item" onclick="showBenefitModal('tiempo')">
+                        <i class="fas fa-clock" style="font-size: 2em; color: #3498db; margin-bottom: 10px;"></i>
+                        <h4>Ahorro de Tiempo</h4>
+                        <p>Automatización de reportes</p>
+                    </div>
+                    <div class="benefit-item" onclick="showBenefitModal('errores')">
+                        <i class="fas fa-shield-alt" style="font-size: 2em; color: #e74c3c; margin-bottom: 10px;"></i>
+                        <h4>Reducción de Errores</h4>
+                        <p>Validación automática</p>
+                    </div>
+                    <div class="benefit-item" onclick="showBenefitModal('decisiones')">
+                        <i class="fas fa-brain" style="font-size: 2em; color: #f39c12; margin-bottom: 10px;"></i>
+                        <h4>Mejores Decisiones</h4>
+                        <p>Dashboards en tiempo real</p>
+                    </div>
+                    <div class="benefit-item" onclick="showBenefitModal('satisfaccion')">
+                        <i class="fas fa-heart" style="font-size: 2em; color: #e91e63; margin-bottom: 10px;"></i>
+                        <h4>Satisfacción Cliente</h4>
+                        <p>Respuesta inmediata</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para detalles de beneficios -->
+    <div id="benefitModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="benefitContent"></div>
+        </div>
+    </div>
+
+    <!-- Modal para estrategias BPM -->
+    <div id="strategyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeStrategyModal()">&times;</span>
+            <div id="strategyContent"></div>
+        </div>
+    </div>
+
+    <button class="reset-button" onclick="resetProgress()" title="Reiniciar Progreso">
+        <i class="fas fa-redo"></i>
+    </button>
+
+    <script>
+        // Datos de los conceptos BPM del documento
+        const conceptsData = [
+            {
+                id: 'proceso',
+                title: 'Proceso',
+                icon: 'fas fa-cogs',
+                color: '#3498db',
+                definition: 'Conjunto de actividades organizadas y secuenciales que transforman entradas en salidas en un tiempo determinado para lograr un resultado empresarial.',
+                example: 'En una empresa de software: análisis de requisitos → diseño → codificación → pruebas → despliegue.',
+                demo: 'Simulación del desarrollo de software paso a paso'
+            },
+            {
+                id: 'entradas',
+                title: 'Entradas (Inputs)',
+                icon: 'fas fa-arrow-right',
+                color: '#e74c3c',
+                definition: 'Lo que requiere el proceso para ejecutarse: datos, materiales, información.',
+                example: 'En facturación: datos del cliente, productos vendidos, precios y condiciones fiscales.',
+                demo: 'Identificar entradas en proceso de pedidos'
+            },
+            {
+                id: 'salidas',
+                title: 'Salidas (Outputs)',
+                icon: 'fas fa-arrow-left',
+                color: '#27ae60',
+                definition: 'El resultado del proceso, sea producto, servicio o información.',
+                example: 'En desarrollo de software: el módulo implementado y listo para producción.',
+                demo: 'Visualizar productos finales'
+            },
+            {
+                id: 'recursos',
+                title: 'Recursos',
+                icon: 'fas fa-users',
+                color: '#f39c12',
+                definition: 'Personas, tecnología, materiales, infraestructura o herramientas empleadas.',
+                example: 'Programadores, servidores, repositorio de código, frameworks.',
+                demo: 'Calculadora de recursos necesarios'
+            },
+            {
+                id: 'cliente',
+                title: 'Cliente del Proceso',
+                icon: 'fas fa-user',
+                color: '#9b59b6',
+                definition: 'Destinatario de la salida: interno o externo.',
+                example: 'En logística: el área de ventas (interno) y el comprador final (externo).',
+                demo: 'Identificar tipos de clientes'
+            },
+            {
+                id: 'expectativas',
+                title: 'Expectativas del Cliente',
+                icon: 'fas fa-star',
+                color: '#e91e63',
+                definition: 'Lo que el cliente espera: calidad, tiempo, costo, precisión.',
+                example: 'En soporte: respuesta en menos de 24 horas, sin errores.',
+                demo: 'Medidor de satisfacción'
+            },
+            {
+                id: 'secuencia',
+                title: 'Secuencia de Actividades',
+                icon: 'fas fa-list-ol',
+                color: '#34495e',
+                definition: 'Orden lógico de pasos del proceso.',
+                example: 'En pedidos: cliente solicita → se verifica inventario → se aprueba crédito → empaquetado → despacho.',
+                demo: 'Diagrama de flujo interactivo'
+            },
+            {
+                id: 'kpis',
+                title: 'Indicadores (KPIs)',
+                icon: 'fas fa-chart-bar',
+                color: '#16a085',
+                definition: 'Métricas para evaluar eficiencia y calidad.',
+                example: 'En desarrollo: bugs por funcionalidad, tiempo promedio de despliegue.',
+                demo: 'Dashboard de métricas en vivo'
+            },
+            {
+                id: 'tipos',
+                title: 'Tipos de Procesos',
+                icon: 'fas fa-sitemap',
+                color: '#d35400',
+                definition: 'Clasificación en estratégicos, críticos y de apoyo según su función en la organización.',
+                example: 'Estratégico: definir estrategia empresarial; Crítico: fabricar calzado; Apoyo: inducción de empleados.',
+                demo: 'Clasificador de procesos'
+            },
+            {
+                id: 'arquitectura',
+                title: 'Arquitectura Empresarial',
+                icon: 'fas fa-building',
+                color: '#8e44ad',
+                definition: 'Marco que define activos, recursos y objetivos para alinear procesos con la estrategia.',
+                example: 'Si la meta es reducir costes, identificar procesos optimizables como logística o compras.',
+                demo: 'Mapa estratégico interactivo'
+            },
+            {
+                id: 'mapa',
+                title: 'Mapa de Procesos',
+                icon: 'fas fa-map',
+                color: '#2980b9',
+                definition: 'Representación visual de todos los procesos de la empresa y sus interrelaciones.',
+                example: 'Identificar procesos críticos (ventas), de apoyo (contabilidad) y estratégicos (planificación).',
+                demo: 'Constructor de mapas de procesos'
+            },
+            {
+                id: 'niveles',
+                title: 'Niveles de Modelización',
+                icon: 'fas fa-layer-group',
+                color: '#c0392b',
+                definition: 'Representación del proceso en tres niveles: conceptual, lógico y físico.',
+                example: 'Conceptual: misión del proceso; Lógico: eventos y respuestas; Físico: roles, tiempos y costos.',
+                demo: 'Visualizador de niveles'
+            },
+         
+        ];
+
+        // Variables globales
+        let completedConcepts = 0;
+        let startTime = Date.now();
+        let timerInterval;
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            generateConceptCards();
+            startTimer();
+            loadProgress();
+        });
+
+        // Generar tarjetas de conceptos
+        function generateConceptCards() {
+            const grid = document.getElementById('conceptsGrid');
+            
+            conceptsData.forEach((concept, index) => {
+                const card = document.createElement('div');
+                card.className = 'concept-card';
+                card.setAttribute('data-concept', concept.id);
+                
+                card.innerHTML = `
+                    <div class="completion-badge">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="card-header">
+                        <div class="card-icon" style="background: ${concept.color}">
+                            <i class="${concept.icon}"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>${concept.title}</h3>
+                            <p>Haz clic para explorar este concepto</p>
+                        </div>
+                    </div>
+                    <div class="card-details" id="details-${concept.id}">
+                        <div class="details-content">
+                            <div class="definition">
+                                <h4><i class="fas fa-book"></i> Definición</h4>
+                                <p>${concept.definition}</p>
+                            </div>
+                            <div class="example">
+                                <h4><i class="fas fa-lightbulb"></i> Ejemplo Práctico</h4>
+                                <p>${concept.example}</p>
+                            </div>
+                            <div class="interactive-demo">
+                                <h4><i class="fas fa-play-circle"></i> Demostración Interactiva</h4>
+                                <p>${concept.demo}</p>
+                                <button class="demo-button" onclick="runDemo('${concept.id}')">
+                                    <i class="fas fa-play"></i> Ejecutar Demo
+                                </button>
+                                <button class="demo-button" onclick="markAsCompleted('${concept.id}')">
+                                    <i class="fas fa-check"></i> Marcar como Visto
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                card.addEventListener('click', () => toggleCard(concept.id));
+                grid.appendChild(card);
+            });
+        }
+
+        // Toggle tarjeta
+        function toggleCard(conceptId) {
+            const card = document.querySelector(`[data-concept="${conceptId}"]`);
+            const details = document.getElementById(`details-${conceptId}`);
+            
+            // Cerrar otras tarjetas
+            document.querySelectorAll('.concept-card').forEach(c => {
+                if (c.getAttribute('data-concept') !== conceptId) {
+                    c.classList.remove('active');
+                    const otherDetails = c.querySelector('.card-details');
+                    otherDetails.classList.remove('expanded');
+                }
+            });
+            
+            // Toggle tarjeta actual
+            card.classList.toggle('active');
+            details.classList.toggle('expanded');
+            
+            if (card.classList.contains('active')) {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // Ejecutar demo
+        function runDemo(conceptId) {
+            const demos = {
+                'proceso': () => showProcessDemo(),
+                'entradas': () => showInputsDemo(),
+                'salidas': () => showOutputsDemo(),
+                'recursos': () => showResourcesDemo(),
+                'cliente': () => showClientDemo(),
+                'expectativas': () => showExpectationsDemo(),
+                'secuencia': () => showSequenceDemo(),
+                'kpis': () => showKPIDemo(),
+                'tipos': () => showTypesDemo(),
+                'arquitectura': () => showArchitectureDemo(),
+                'mapa': () => showMapDemo(),
+                'niveles': () => showLevelsDemo(),
+            };
+            
+            if (demos[conceptId]) {
+                demos[conceptId]();
+            }
+        }
+
+        // Demos específicos
+        function showProcessDemo() {
+            alert('🔄 DEMO: Proceso de Desarrollo de Software\n\n1. 📋 Análisis de requisitos\n2. 🎨 Diseño\n3. 💻 Codificación\n4. 🧪 Pruebas\n5. 🚀 Despliegue\n\n¡Observa cómo cada paso transforma las entradas en salidas!');
+        }
+
+        function showInputsDemo() {
+            const inputs = ['📋 Requisitos del cliente', '💰 Presupuesto', '⏰ Tiempo disponible', '👥 Equipo de trabajo'];
+            alert(`📥 DEMO: Entradas del Proceso\n\n${inputs.join('\n')}\n\n¡Estas son las materias primas de nuestro proceso!`);
+        }
+
+        function showOutputsDemo() {
+            const outputs = ['✅ Software funcional', '📖 Documentación', '🧪 Casos de prueba', '😊 Cliente satisfecho'];
+            alert(`📤 DEMO: Salidas del Proceso\n\n${outputs.join('\n')}\n\n¡Estos son los resultados que entregamos!`);
+        }
+
+        function showResourcesDemo() {
+            const resources = ['👨‍💻 Desarrolladores', '💻 Computadoras', '🛠️ Herramientas de desarrollo', '☁️ Servidores'];
+            alert(`🔧 DEMO: Recursos Necesarios\n\n${resources.join('\n')}\n\n¡Sin estos recursos, el proceso no puede ejecutarse!`);
+        }
+
+        function showClientDemo() {
+            alert('👤 DEMO: Identificación de Clientes\n\n🔸 Cliente Interno: Departamento de Marketing\n🔸 Cliente Externo: Usuario final\n\n¡Ambos tienen diferentes expectativas!');
+        }
+
+        function showExpectationsDemo() {
+            const expectations = ['⚡ Velocidad: Entrega en 30 días', '💎 Calidad: 0 bugs críticos', '💰 Costo: Dentro del presupuesto', '📱 Usabilidad: Interfaz intuitiva'];
+            alert(`⭐ DEMO: Expectativas del Cliente\n\n${expectations.join('\n')}\n\n¡El éxito se mide contra estas expectativas!`);
+        }
+
+        function showSequenceDemo() {
+            alert('📋 DEMO: Secuencia de Actividades\n\n1️⃣ Inicio del proyecto\n2️⃣ Planificación\n3️⃣ Ejecución\n4️⃣ Monitoreo\n5️⃣ Cierre\n\n¡El orden importa para el éxito!');
+        }
+
+        function showKPIDemo() {
+            const kpis = ['📊 Tiempo de entrega: 25 días', '🐛 Bugs encontrados: 3', '😊 Satisfacción: 95%', '💰 Presupuesto usado: 85%'];
+            alert(`📈 DEMO: Dashboard de KPIs\n\n${kpis.join('\n')}\n\n¡Métricas en tiempo real para la toma de decisiones!`);
+        }
+
+        function showTypesDemo() {
+            alert('🏢 DEMO: Clasificación de Procesos\n\n🎯 ESTRATÉGICOS: Planificación empresarial\n⚙️ CRÍTICOS: Desarrollo de productos\n🛠️ DE APOYO: Gestión de RRHH\n\n¡Cada tipo tiene diferente impacto en la organización!');
+        }
+
+        function showArchitectureDemo() {
+            alert('🏗️ DEMO: Arquitectura Empresarial\n\n🎯 Visión: Ser líder en tecnología\n📋 Procesos alineados con la visión\n📊 Métricas que miden el progreso\n\n¡Todo conectado estratégicamente!');
+        }
+
+        function showMapDemo() {
+            alert('🗺️ DEMO: Mapa de Procesos\n\n📈 ESTRATÉGICOS\n├── Planificación\n└── Innovación\n\n⚙️ OPERATIVOS\n├── Desarrollo\n├── Ventas\n└── Entrega\n\n🛠️ APOYO\n├── RRHH\n└── Finanzas');
+        }
+
+        function showLevelsDemo() {
+            alert('📊 DEMO: Niveles de Modelización\n\n🎯 CONCEPTUAL: "Desarrollar software de calidad"\n🔄 LÓGICO: Flujo de actividades y decisiones\n⚙️ FÍSICO: Juan (8h) + María (4h) = $500\n\n¡Cada nivel aporta diferente información!');
+        }
+
+
+        // Marcar como completado
+        function markAsCompleted(conceptId) {
+            const card = document.querySelector(`[data-concept="${conceptId}"]`);
+            if (!card.classList.contains('completed')) {
+                card.classList.add('completed');
+                completedConcepts++;
+                updateProgress();
+                saveProgress();
+                
+                // Efecto de celebración
+                confetti(card);
+            }
+        }
+
+        // Actualizar progreso
+        function updateProgress() {
+            const progress = (completedConcepts / conceptsData.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = Math.round(progress) + '%';
+            document.getElementById('completedCount').textContent = completedConcepts;
+        }
+
+        // Timer
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                const minutes = Math.floor(elapsed / 60000);
+                const seconds = Math.floor((elapsed % 60000) / 1000);
+                document.getElementById('timer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        // Mostrar modal de estrategias
+        function showStrategyModal(strategy) {
+            const modal = document.getElementById('strategyModal');
+            const content = document.getElementById('strategyContent');
+            
+            const strategies = {
+                'bpr': {
+                    title: '🔧 Reingeniería de Procesos (BPR)',
+                    content: `
+                        <div style="background: linear-gradient(135deg, #ffecd2, #fcb69f); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                            <h3>📋 Definición</h3>
+                            <p><strong>Rediseño radical para lograr mejoras drásticas en costo, calidad, velocidad o servicio.</strong></p>
+                        </div>
+                        
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                            <h4><i class="fas fa-lightbulb"></i> Ejemplo Práctico</h4>
+                            <p>Una fábrica reorganiza su planta y automatiza trazabilidad para reducir el tiempo de producción a la mitad.</p>
+                        </div>
+                        
+                        <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                            <h4><i class="fas fa-cogs"></i> Características Clave</h4>
+                            <ul>
+                                <li>🎯 <strong>Cambio radical:</strong> No pequeños ajustes, sino transformación completa</li>
+                                <li>📊 <strong>Enfoque en resultados:</strong> Mejoras dramáticas y medibles</li>
+                                <li>🏗️ <strong>Rediseño desde cero:</strong> Cuestiona todo lo existente</li>
+                                <li>⚡ <strong>Impacto inmediato:</strong> Resultados visibles rápidamente</li>
+                            </ul>
+                        </div>
+                        
+                        <div style="background: #d4edda; padding: 20px; border-radius: 10px;">
+                            <h4><i class="fas fa-chart-line"></i> Resultados Típicos</h4>
+                            <p>🔸 Reducción de costos: 50-80%<br>
+                            🔸 Mejora en velocidad: 60-90%<br>
+                            🔸 Aumento de calidad: 40-70%</p>
+                        </div>
+                    `
+                },
+                'kaizen': {
+                    title: '📈 Mejora Continua (Kaizen)',
+                    content: `
+                        <div style="background: linear-gradient(135deg, #fff3e0, #ffe0b2); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                            <h3>📋 Definición</h3>
+                            <p><strong>Ajustes pequeños y regulares para optimizar procesos basados en indicadores.</strong></p>
+                        </div>
+                        
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                            <h4><i class="fas fa-lightbulb"></i> Ejemplo Práctico</h4>
+                            <p>En atención al cliente: revisión semanal de tiempos de respuesta y reasignación de personal.</p>
+                        </div>
+                        
+                        <div style="background: #fff3e0; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                            <h4><i class="fas fa-cycle"></i> Ciclo Kaizen</h4>
+                            <ol>
+                                <li>🔍 <strong>Planificar:</strong> Identificar oportunidad de mejora</li>
+                                <li>⚡ <strong>Hacer:</strong> Implementar cambio pequeño</li>
+                                <li>📊 <strong>Verificar:</strong> Medir resultados</li>
+                                <li>🎯 <strong>Actuar:</strong> Estandarizar si funciona</li>
+                            </ol>
+                        </div>
+                        
+                        <div style="background: #e8f5e8; padding: 20px; border-radius: 10px;">
+                            <h4><i class="fas fa-users"></i> Ventajas del Kaizen</h4>
+                            <p>✅ Involucra a todos los empleados<br>
+                            ✅ Bajo riesgo y costo<br>
+                            ✅ Mejora la moral del equipo<br>
+                            ✅ Resultados sostenibles</p>
+                        </div>
+                    `
+                },
+                'bpa': {
+                    title: '🤖 Automatización de Procesos (BPA)',
+                    content: `
+                        <div style="background: linear-gradient(135deg, #d4edda, #c3e6cb); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                            <h3>📋 Definición</h3>
+                            <p><strong>Uso de tecnología para reducir tareas manuales y acelerar procesos.</strong></p>
+                        </div>
+                        
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                            <h4><i class="fas fa-lightbulb"></i> Ejemplo Práctico</h4>
+                            <p>Facturación automática con recordatorios de pago y actualización de cuentas.</p>
+                        </div>
+                        
+                        <div style="background: #e8f4fd; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                            <h4><i class="fas fa-robot"></i> Tipos de Automatización</h4>
+                            <ul>
+                                <li>🔄 <strong>RPA:</strong> Robots que imitan acciones humanas</li>
+                                <li>📊 <strong>Workflows:</strong> Flujos de trabajo automatizados</li>
+                                <li>🤖 <strong>Chatbots:</strong> Atención al cliente 24/7</li>
+                                <li>📈 <strong>IA:</strong> Decisiones inteligentes automáticas</li>
+                            </ul>
+                        </div>
+                        
+                        <div style="background: #d1ecf1; padding: 20px; border-radius: 10px;">
+                            <h4><i class="fas fa-trophy"></i> Beneficios BPA</h4>
+                            <p>⚡ Velocidad: 10x más rápido<br>
+                            🎯 Precisión: 99%+ de exactitud<br>
+                            💰 Ahorro: 60-80% en costos<br>
+                            ⏰ Disponibilidad: 24/7/365</p>
+                        </div>
+                    `
+                },
+                'monitoreo': {
+                    title: '👁️ Monitoreo y Control',
+                    content: `
+                        <div style="background: linear-gradient(135deg, #f3e5f5, #e1bee7); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                            <h3>📋 Definición</h3>
+                            <p><strong>Seguimiento del desempeño real de procesos con indicadores y alertas.</strong></p>
+                        </div>
+                        
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                            <h4><i class="fas fa-lightbulb"></i> Ejemplo Práctico</h4>
+                            <p>Dashboard en tiempo real con número de pedidos atrasados y reclamaciones abiertas.</p>
+                        </div>
+                        
+                        <div style="background: #fff0f5; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                            <h4><i class="fas fa-dashboard"></i> Elementos del Monitoreo</h4>
+                            <ul>
+                                <li>📊 <strong>KPIs:</strong> Indicadores clave de rendimiento</li>
+                                <li>🚨 <strong>Alertas:</strong> Notificaciones automáticas</li>
+                                <li>📈 <strong>Dashboards:</strong> Visualización en tiempo real</li>
+                                <li>📋 <strong>Reportes:</strong> Análisis periódicos detallados</li>
+                            </ul>
+                        </div>
+                        
+                        <div style="background: #e7f3ff; padding: 20px; border-radius: 10px;">
+                            <h4><i class="fas fa-target"></i> Tipos de Control</h4>
+                            <p>🔍 <strong>Preventivo:</strong> Evita problemas antes de que ocurran<br>
+                            ⚡ <strong>Correctivo:</strong> Respuesta rápida a desviaciones<br>
+                            📊 <strong>Predictivo:</strong> Anticipa problemas futuros<br>
+                            🎯 <strong>Estratégico:</strong> Alineación con objetivos</p>
+                        </div>
+                    `
+                }
+            };
+            
+            content.innerHTML = `
+                <h2>${strategies[strategy].title}</h2>
+                ${strategies[strategy].content}
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="demo-button" onclick="closeStrategyModal()">
+                        <i class="fas fa-check"></i> Entendido
+                    </button>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        // Cerrar modal de estrategias
+        function closeStrategyModal() {
+            document.getElementById('strategyModal').style.display = 'none';
+        }
+
+        // Mostrar modal de beneficios
+        function showBenefitModal(benefit) {
+            const modal = document.getElementById('benefitModal');
+            const content = document.getElementById('benefitContent');
+            
+            const benefits = {
+                'tiempo': {
+                    title: '⏰ Ahorro de Tiempo',
+                    content: `
+                        <h3>Automatización de Reportes Financieros</h3>
+                        <p><strong>Antes:</strong> 8 horas semanales generando reportes manualmente</p>
+                        <p><strong>Después:</strong> 15 minutos configurando automatización</p>
+                        <div style="background: #d4edda; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                            <strong>💰 Ahorro anual:</strong> 400 horas = $20,000 USD
+                        </div>
+                        <p>La automatización libera tiempo valioso para actividades estratégicas.</p>
+                    `
+                },
+                'errores': {
+                    title: '🛡️ Reducción de Errores',
+                    content: `
+                        <h3>Validación Automática de Datos</h3>
+                        <p><strong>Problema:</strong> Errores humanos en entrada de datos</p>
+                        <p><strong>Solución BPM:</strong> Validación automática y workflows</p>
+                        <div style="background: #f8d7da; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                            <strong>📉 Reducción de errores:</strong> 95%
+                        </div>
+                        <p>Los procesos automatizados eliminan la variabilidad humana.</p>
+                    `
+                },
+                'decisiones': {
+                    title: '🧠 Mejores Decisiones',
+                    content: `
+                        <h3>Dashboards en Tiempo Real</h3>
+                        <p><strong>Información disponible 24/7:</strong></p>
+                        <ul>
+                            <li>📊 KPIs actualizados en tiempo real</li>
+                            <li>🚨 Alertas automáticas</li>
+                            <li>📈 Tendencias y predicciones</li>
+                        </ul>
+                        <div style="background: #d1ecf1; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                            <strong>⚡ Velocidad de decisión:</strong> 10x más rápida
+                        </div>
+                    `
+                },
+                'satisfaccion': {
+                    title: '❤️ Satisfacción del Cliente',
+                    content: `
+                        <h3>Sistema de Respuesta Inmediata</h3>
+                        <p><strong>Mejoras implementadas:</strong></p>
+                        <ul>
+                            <li>🤖 Chatbots inteligentes</li>
+                            <li>📱 Notificaciones automáticas</li>
+                            <li>🎯 Seguimiento personalizado</li>
+                        </ul>
+                        <div style="background: #f3e5f5; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                            <strong>😊 Aumento en satisfacción:</strong> 35%
+                        </div>
+                    `
+                }
+            };
+            
+            content.innerHTML = `
+                <h2>${benefits[benefit].title}</h2>
+                ${benefits[benefit].content}
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        // Cerrar modal
+        document.querySelector('.close').onclick = function() {
+            document.getElementById('benefitModal').style.display = 'none';
+        };
+
+        window.onclick = function(event) {
+            const benefitModal = document.getElementById('benefitModal');
+            const strategyModal = document.getElementById('strategyModal');
+            
+            if (event.target === benefitModal) {
+                benefitModal.style.display = 'none';
+            }
+            if (event.target === strategyModal) {
+                strategyModal.style.display = 'none';
+            }
+        };
+
+        // Reiniciar progreso
+        function resetProgress() {
+            if (confirm('¿Estás seguro de que quieres reiniciar todo el progreso?')) {
+                completedConcepts = 0;
+                startTime = Date.now();
+                
+                document.querySelectorAll('.concept-card').forEach(card => {
+                    card.classList.remove('completed', 'active');
+                    const details = card.querySelector('.card-details');
+                    details.classList.remove('expanded');
+                });
+                
+                updateProgress();
+                localStorage.removeItem('bpmProgress');
+            }
+        }
+
+        // Guardar progreso
+        function saveProgress() {
+            const progress = {
+                completed: Array.from(document.querySelectorAll('.concept-card.completed'))
+                    .map(card => card.getAttribute('data-concept')),
+                completedCount: completedConcepts,
+                startTime: startTime
+            };
+            localStorage.setItem('bpmProgress', JSON.stringify(progress));
+        }
+
+        // Cargar progreso
+        function loadProgress() {
+            const saved = localStorage.getItem('bmpProgress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                completedConcepts = progress.completedCount || 0;
+                startTime = progress.startTime || Date.now();
+                
+                if (progress.completed) {
+                    progress.completed.forEach(conceptId => {
+                        const card = document.querySelector(`[data-concept="${conceptId}"]`);
+                        if (card) {
+                            card.classList.add('completed');
+                        }
+                    });
+                }
+                
+                updateProgress();
+            }
+        }
+
+        // Efecto confetti
+        function confetti(element) {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7'];
+            
+            for (let i = 0; i < 10; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'absolute';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * element.offsetWidth + 'px';
+                confetti.style.top = Math.random() * element.offsetHeight + 'px';
+                confetti.style.borderRadius = '50%';
+                confetti.style.pointerEvents = 'none';
+                confetti.style.zIndex = '1000';
+                
+                element.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 2000);
+            }
+        }
+
+        // Navegación por teclado
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.concept-card.active').forEach(card => {
+                    card.classList.remove('active');
+                    const details = card.querySelector('.card-details');
+                    details.classList.remove('expanded');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
