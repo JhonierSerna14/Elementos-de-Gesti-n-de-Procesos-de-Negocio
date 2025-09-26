@@ -440,11 +440,47 @@
                 font-size: 0.8em;
             }
             
-            .flow-step:hover .flow-step > div {
-                transform: scale(1.05);
-            }
-            
-            .case-study {
+        .flow-step:hover .flow-step > div {
+            transform: scale(1.05);
+        }
+        
+        .flow-step.completed {
+            opacity: 0.8;
+        }
+        
+        .flow-step.completed::after {
+            content: '✓';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #27ae60;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .flow-step.completed::after {
+            content: '✓';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #27ae60;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }            .case-study {
                 padding: 20px;
                 margin-top: 20px;
             }
@@ -468,7 +504,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1><i class="fas fa-industry"></i> TechCorp Solutions - Tablero BPM</h1>
+            <h1><i class="fas fa-industry"></i>Tablero BPM</h1>
             <p>Sistema Interactivo de Gestión de Procesos de Negocio</p>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
@@ -477,7 +513,7 @@
         </div>
 
         <div class="floating-stats">
-            <div><i class="fas fa-check-circle"></i> Conceptos: <span id="completedCount">0</span>/12</div>
+            <div><i class="fas fa-check-circle"></i> Progreso: <span id="completedCount">0</span>/12</div>
         </div>
 
         <div class="main-content">
@@ -647,42 +683,6 @@
                 example: 'En desarrollo: bugs por funcionalidad, tiempo promedio de despliegue.',
                 ejemplo: 'Dashboard de métricas en vivo'
             },
-            {
-                id: 'tipos',
-                title: 'Tipos de Procesos',
-                icon: 'fas fa-sitemap',
-                color: '#d35400',
-                definition: 'Clasificación en estratégicos, críticos y de apoyo según su función en la organización.',
-                example: 'Estratégico: definir estrategia empresarial; Crítico: fabricar calzado; Apoyo: inducción de empleados.',
-                ejemplo: 'Clasificador de procesos'
-            },
-            {
-                id: 'arquitectura',
-                title: 'Arquitectura Empresarial',
-                icon: 'fas fa-building',
-                color: '#8e44ad',
-                definition: 'Marco que define activos, recursos y objetivos para alinear procesos con la estrategia.',
-                example: 'Si la meta es reducir costes, identificar procesos optimizables como logística o compras.',
-                ejemplo: 'Mapa estratégico interactivo'
-            },
-            {
-                id: 'mapa',
-                title: 'Mapa de Procesos',
-                icon: 'fas fa-map',
-                color: '#2980b9',
-                definition: 'Representación visual de todos los procesos de la empresa y sus interrelaciones.',
-                example: 'Identificar procesos críticos (ventas), de apoyo (contabilidad) y estratégicos (planificación).',
-                ejemplo: 'Constructor de mapas de procesos'
-            },
-            {
-                id: 'niveles',
-                title: 'Niveles de Modelización',
-                icon: 'fas fa-layer-group',
-                color: '#c0392b',
-                definition: 'Representación del proceso en tres niveles: conceptual, lógico y físico.',
-                example: 'Conceptual: misión del proceso; Lógico: eventos y respuestas; Físico: roles, tiempos y costos.',
-                ejemplo: 'Visualizador de niveles'
-            },
          
         ];
 
@@ -735,9 +735,6 @@
                                 <p>${concept.ejemplo}</p>
                                 <button class="ejemplo-button" onclick="runejemplo('${concept.id}')">
                                     <i class="fas fa-play"></i> Ejecutar ejemplo
-                                </button>
-                                <button class="ejemplo-button" onclick="markAsCompleted('${concept.id}')">
-                                    <i class="fas fa-check"></i> Marcar como Visto
                                 </button>
                             </div>
                         </div>
@@ -797,39 +794,47 @@
         // ejemplos específicos
         function showProcessejemplo() {
             alert('🔄 ejemplo: Proceso de Desarrollo de Software\n\n1. 📋 Análisis de requisitos\n2. 🎨 Diseño\n3. 💻 Codificación\n4. 🧪 Pruebas\n5. 🚀 Despliegue\n\n¡Observa cómo cada paso transforma las entradas en salidas!');
+            markAsCompleted('proceso');
         }
 
         function showInputsejemplo() {
             const inputs = ['📋 Requisitos del cliente', '💰 Presupuesto', '⏰ Tiempo disponible', '👥 Equipo de trabajo'];
             alert(`📥 ejemplo: Entradas del Proceso\n\n${inputs.join('\n')}\n\n¡Estas son las materias primas de nuestro proceso!`);
+            markAsCompleted('entradas');
         }
 
         function showOutputsejemplo() {
             const outputs = ['✅ Software funcional', '📖 Documentación', '🧪 Casos de prueba', '😊 Cliente satisfecho'];
             alert(`📤 ejemplo: Salidas del Proceso\n\n${outputs.join('\n')}\n\n¡Estos son los resultados que entregamos!`);
+            markAsCompleted('salidas');
         }
 
         function showResourcesejemplo() {
             const resources = ['👨‍💻 Desarrolladores', '💻 Computadoras', '🛠️ Herramientas de desarrollo', '☁️ Servidores'];
             alert(`🔧 ejemplo: Recursos Necesarios\n\n${resources.join('\n')}\n\n¡Sin estos recursos, el proceso no puede ejecutarse!`);
+            markAsCompleted('recursos');
         }
 
         function showClientejemplo() {
             alert('👤 ejemplo: Identificación de Clientes\n\n🔸 Cliente Interno: Departamento de Marketing\n🔸 Cliente Externo: Usuario final\n\n¡Ambos tienen diferentes expectativas!');
+            markAsCompleted('cliente');
         }
 
         function showExpectationsejemplo() {
             const expectations = ['⚡ Velocidad: Entrega en 30 días', '💎 Calidad: 0 bugs críticos', '💰 Costo: Dentro del presupuesto', '📱 Usabilidad: Interfaz intuitiva'];
             alert(`⭐ ejemplo: Expectativas del Cliente\n\n${expectations.join('\n')}\n\n¡El éxito se mide contra estas expectativas!`);
+            markAsCompleted('expectativas');
         }
 
         function showSequenceejemplo() {
             alert('📋 ejemplo: Secuencia de Actividades\n\n1️⃣ Inicio del proyecto\n2️⃣ Planificación\n3️⃣ Ejecución\n4️⃣ Monitoreo\n5️⃣ Cierre\n\n¡El orden importa para el éxito!');
+            markAsCompleted('secuencia');
         }
 
         function showKPIejemplo() {
             const kpis = ['📊 Tiempo de entrega: 25 días', '🐛 Bugs encontrados: 3', '😊 Satisfacción: 95%', '💰 Presupuesto usado: 85%'];
             alert(`📈 ejemplo: Dashboard de KPIs\n\n${kpis.join('\n')}\n\n¡Métricas en tiempo real para la toma de decisiones!`);
+            markAsCompleted('kpis');
         }
 
         function showTypesejemplo() {
@@ -851,21 +856,31 @@
 
         // Marcar como completado
         function markAsCompleted(conceptId) {
+            // Verificar si ya está completado
+            const completedItems = JSON.parse(localStorage.getItem('bpmProgress') || '{}');
+            const completedList = completedItems.completed || [];
+            
+            if (completedList.includes(conceptId)) {
+                return; // Ya está completado
+            }
+            
             const card = document.querySelector(`[data-concept="${conceptId}"]`);
-            if (!card.classList.contains('completed')) {
+            if (card && !card.classList.contains('completed')) {
                 card.classList.add('completed');
-                completedConcepts++;
-                updateProgress();
-                saveProgress();
-                
                 // Efecto de celebración
                 confetti(card);
             }
+            
+            // Incrementar contador y actualizar progreso
+            completedConcepts++;
+            updateProgress();
+            saveProgress();
         }
 
         // Actualizar progreso
         function updateProgress() {
-            const progress = (completedConcepts / conceptsData.length) * 100;
+            const totalElements = 12; // 8 conceptos + 4 estrategias
+            const progress = (completedConcepts / totalElements) * 100;
             document.getElementById('progressFill').style.width = progress + '%';
             document.getElementById('progressText').textContent = Math.round(progress) + '%';
             document.getElementById('completedCount').textContent = completedConcepts;
@@ -882,8 +897,12 @@
             }, 1000);
         }
 
+        // Variable global para almacenar la estrategia actual
+        let currentStrategy = null;
+
         // Mostrar modal de estrategias
         function showStrategyModal(strategy) {
+            currentStrategy = strategy;
             const modal = document.getElementById('strategyModal');
             const content = document.getElementById('strategyContent');
             
@@ -1021,7 +1040,7 @@
                 <h2>${strategies[strategy].title}</h2>
                 ${strategies[strategy].content}
                 <div style="text-align: center; margin-top: 20px;">
-                    <button class="ejemplo-button" onclick="closeStrategyModal()">
+                    <button class="ejemplo-button" onclick="closeStrategyModal('${strategy}')">
                         <i class="fas fa-check"></i> Entendido
                     </button>
                 </div>
@@ -1031,8 +1050,18 @@
         }
 
         // Cerrar modal de estrategias
-        function closeStrategyModal() {
+        function closeStrategyModal(strategy) {
             document.getElementById('strategyModal').style.display = 'none';
+            const strategyToMark = strategy || currentStrategy;
+            if (strategyToMark) {
+                markAsCompleted('strategy-' + strategyToMark);
+                // Marcar visualmente el flow-step como completado
+                const flowStep = document.querySelector(`[onclick*="showStrategyModal('${strategyToMark}')"]`);
+                if (flowStep) {
+                    flowStep.classList.add('completed');
+                }
+            }
+            currentStrategy = null;
         }
 
         // Mostrar modal de beneficios
@@ -1118,7 +1147,7 @@
                 benefitModal.style.display = 'none';
             }
             if (event.target === strategyModal) {
-                strategyModal.style.display = 'none';
+                closeStrategyModal(); // Usar la función para marcar como completado
             }
         };
 
@@ -1134,6 +1163,10 @@
                     details.classList.remove('expanded');
                 });
                 
+                document.querySelectorAll('.flow-step').forEach(step => {
+                    step.classList.remove('completed');
+                });
+                
                 updateProgress();
                 localStorage.removeItem('bpmProgress');
             }
@@ -1141,9 +1174,23 @@
 
         // Guardar progreso
         function saveProgress() {
+            const conceptCards = Array.from(document.querySelectorAll('.concept-card.completed'))
+                .map(card => card.getAttribute('data-concept'));
+            
+            const completedStrategies = Array.from(document.querySelectorAll('.flow-step.completed'))
+                .map(step => {
+                    const onclickAttr = step.getAttribute('onclick');
+                    const match = onclickAttr?.match(/showStrategyModal\('([^']+)'\)/);
+                    return match ? 'strategy-' + match[1] : null;
+                })
+                .filter(id => id);
+            
+            const savedProgress = JSON.parse(localStorage.getItem('bpmProgress') || '{}');
+            const allCompleted = [...(savedProgress.completed || []), ...conceptCards, ...completedStrategies]
+                .filter((item, index, array) => array.indexOf(item) === index); // Remove duplicates
+            
             const progress = {
-                completed: Array.from(document.querySelectorAll('.concept-card.completed'))
-                    .map(card => card.getAttribute('data-concept')),
+                completed: allCompleted,
                 completedCount: completedConcepts,
                 startTime: startTime
             };
@@ -1152,7 +1199,7 @@
 
         // Cargar progreso
         function loadProgress() {
-            const saved = localStorage.getItem('bmpProgress');
+            const saved = localStorage.getItem('bpmProgress');
             if (saved) {
                 const progress = JSON.parse(saved);
                 completedConcepts = progress.completedCount || 0;
@@ -1160,9 +1207,17 @@
                 
                 if (progress.completed) {
                     progress.completed.forEach(conceptId => {
-                        const card = document.querySelector(`[data-concept="${conceptId}"]`);
-                        if (card) {
-                            card.classList.add('completed');
+                        if (conceptId.startsWith('strategy-')) {
+                            const strategy = conceptId.replace('strategy-', '');
+                            const flowStep = document.querySelector(`[onclick*="showStrategyModal('${strategy}')"]`);
+                            if (flowStep) {
+                                flowStep.classList.add('completed');
+                            }
+                        } else {
+                            const card = document.querySelector(`[data-concept="${conceptId}"]`);
+                            if (card) {
+                                card.classList.add('completed');
+                            }
                         }
                     });
                 }
