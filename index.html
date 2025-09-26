@@ -183,7 +183,7 @@
             border-left: 5px solid #9c27b0;
         }
 
-        .interactive-demo {
+        .interactive-ejemplo {
             background: linear-gradient(135deg, #fff3e0, #ffe0b2);
             padding: 20px;
             border-radius: 10px;
@@ -191,7 +191,7 @@
             border-left: 5px solid #ff9800;
         }
 
-        .demo-button {
+        .ejemplo-button {
             background: #ff9800;
             color: white;
             border: none;
@@ -203,7 +203,7 @@
             transition: all 0.3s ease;
         }
 
-        .demo-button:hover {
+        .ejemplo-button:hover {
             background: #f57c00;
             transform: scale(1.05);
         }
@@ -477,7 +477,7 @@
         </div>
 
         <div class="floating-stats">
-            <div><i class="fas fa-check-circle"></i> Conceptos: <span id="completedCount">0</span>/13</div>
+            <div><i class="fas fa-check-circle"></i> Conceptos: <span id="completedCount">0</span>/12</div>
         </div>
 
         <div class="main-content">
@@ -582,7 +582,7 @@
                 color: '#3498db',
                 definition: 'Conjunto de actividades organizadas y secuenciales que transforman entradas en salidas en un tiempo determinado para lograr un resultado empresarial.',
                 example: 'En una empresa de software: análisis de requisitos → diseño → codificación → pruebas → despliegue.',
-                demo: 'Simulación del desarrollo de software paso a paso'
+                ejemplo: 'Simulación del desarrollo de software paso a paso'
             },
             {
                 id: 'entradas',
@@ -591,7 +591,7 @@
                 color: '#e74c3c',
                 definition: 'Lo que requiere el proceso para ejecutarse: datos, materiales, información.',
                 example: 'En facturación: datos del cliente, productos vendidos, precios y condiciones fiscales.',
-                demo: 'Identificar entradas en proceso de pedidos'
+                ejemplo: 'Identificar entradas en proceso de pedidos'
             },
             {
                 id: 'salidas',
@@ -600,7 +600,7 @@
                 color: '#27ae60',
                 definition: 'El resultado del proceso, sea producto, servicio o información.',
                 example: 'En desarrollo de software: el módulo implementado y listo para producción.',
-                demo: 'Visualizar productos finales'
+                ejemplo: 'Visualizar productos finales'
             },
             {
                 id: 'recursos',
@@ -609,7 +609,7 @@
                 color: '#f39c12',
                 definition: 'Personas, tecnología, materiales, infraestructura o herramientas empleadas.',
                 example: 'Programadores, servidores, repositorio de código, frameworks.',
-                demo: 'Calculadora de recursos necesarios'
+                ejemplo: 'Calculadora de recursos necesarios'
             },
             {
                 id: 'cliente',
@@ -618,7 +618,7 @@
                 color: '#9b59b6',
                 definition: 'Destinatario de la salida: interno o externo.',
                 example: 'En logística: el área de ventas (interno) y el comprador final (externo).',
-                demo: 'Identificar tipos de clientes'
+                ejemplo: 'Identificar tipos de clientes'
             },
             {
                 id: 'expectativas',
@@ -627,7 +627,7 @@
                 color: '#e91e63',
                 definition: 'Lo que el cliente espera: calidad, tiempo, costo, precisión.',
                 example: 'En soporte: respuesta en menos de 24 horas, sin errores.',
-                demo: 'Medidor de satisfacción'
+                ejemplo: 'Medidor de satisfacción'
             },
             {
                 id: 'secuencia',
@@ -636,7 +636,7 @@
                 color: '#34495e',
                 definition: 'Orden lógico de pasos del proceso.',
                 example: 'En pedidos: cliente solicita → se verifica inventario → se aprueba crédito → empaquetado → despacho.',
-                demo: 'Diagrama de flujo interactivo'
+                ejemplo: 'Diagrama de flujo interactivo'
             },
             {
                 id: 'kpis',
@@ -645,7 +645,7 @@
                 color: '#16a085',
                 definition: 'Métricas para evaluar eficiencia y calidad.',
                 example: 'En desarrollo: bugs por funcionalidad, tiempo promedio de despliegue.',
-                demo: 'Dashboard de métricas en vivo'
+                ejemplo: 'Dashboard de métricas en vivo'
             },
             {
                 id: 'tipos',
@@ -654,7 +654,7 @@
                 color: '#d35400',
                 definition: 'Clasificación en estratégicos, críticos y de apoyo según su función en la organización.',
                 example: 'Estratégico: definir estrategia empresarial; Crítico: fabricar calzado; Apoyo: inducción de empleados.',
-                demo: 'Clasificador de procesos'
+                ejemplo: 'Clasificador de procesos'
             },
             {
                 id: 'arquitectura',
@@ -663,7 +663,7 @@
                 color: '#8e44ad',
                 definition: 'Marco que define activos, recursos y objetivos para alinear procesos con la estrategia.',
                 example: 'Si la meta es reducir costes, identificar procesos optimizables como logística o compras.',
-                demo: 'Mapa estratégico interactivo'
+                ejemplo: 'Mapa estratégico interactivo'
             },
             {
                 id: 'mapa',
@@ -672,7 +672,7 @@
                 color: '#2980b9',
                 definition: 'Representación visual de todos los procesos de la empresa y sus interrelaciones.',
                 example: 'Identificar procesos críticos (ventas), de apoyo (contabilidad) y estratégicos (planificación).',
-                demo: 'Constructor de mapas de procesos'
+                ejemplo: 'Constructor de mapas de procesos'
             },
             {
                 id: 'niveles',
@@ -681,7 +681,7 @@
                 color: '#c0392b',
                 definition: 'Representación del proceso en tres niveles: conceptual, lógico y físico.',
                 example: 'Conceptual: misión del proceso; Lógico: eventos y respuestas; Físico: roles, tiempos y costos.',
-                demo: 'Visualizador de niveles'
+                ejemplo: 'Visualizador de niveles'
             },
          
         ];
@@ -730,13 +730,13 @@
                                 <h4><i class="fas fa-lightbulb"></i> Ejemplo Práctico</h4>
                                 <p>${concept.example}</p>
                             </div>
-                            <div class="interactive-demo">
-                                <h4><i class="fas fa-play-circle"></i> Demostración Interactiva</h4>
-                                <p>${concept.demo}</p>
-                                <button class="demo-button" onclick="runDemo('${concept.id}')">
-                                    <i class="fas fa-play"></i> Ejecutar Demo
+                            <div class="interactive-ejemplo">
+                                <h4><i class="fas fa-play-circle"></i> ejemplostración Interactiva</h4>
+                                <p>${concept.ejemplo}</p>
+                                <button class="ejemplo-button" onclick="runejemplo('${concept.id}')">
+                                    <i class="fas fa-play"></i> Ejecutar ejemplo
                                 </button>
-                                <button class="demo-button" onclick="markAsCompleted('${concept.id}')">
+                                <button class="ejemplo-button" onclick="markAsCompleted('${concept.id}')">
                                     <i class="fas fa-check"></i> Marcar como Visto
                                 </button>
                             </div>
@@ -772,80 +772,80 @@
             }
         }
 
-        // Ejecutar demo
-        function runDemo(conceptId) {
-            const demos = {
-                'proceso': () => showProcessDemo(),
-                'entradas': () => showInputsDemo(),
-                'salidas': () => showOutputsDemo(),
-                'recursos': () => showResourcesDemo(),
-                'cliente': () => showClientDemo(),
-                'expectativas': () => showExpectationsDemo(),
-                'secuencia': () => showSequenceDemo(),
-                'kpis': () => showKPIDemo(),
-                'tipos': () => showTypesDemo(),
-                'arquitectura': () => showArchitectureDemo(),
-                'mapa': () => showMapDemo(),
-                'niveles': () => showLevelsDemo(),
+        // Ejecutar ejemplo
+        function runejemplo(conceptId) {
+            const ejemplos = {
+                'proceso': () => showProcessejemplo(),
+                'entradas': () => showInputsejemplo(),
+                'salidas': () => showOutputsejemplo(),
+                'recursos': () => showResourcesejemplo(),
+                'cliente': () => showClientejemplo(),
+                'expectativas': () => showExpectationsejemplo(),
+                'secuencia': () => showSequenceejemplo(),
+                'kpis': () => showKPIejemplo(),
+                'tipos': () => showTypesejemplo(),
+                'arquitectura': () => showArchitectureejemplo(),
+                'mapa': () => showMapejemplo(),
+                'niveles': () => showLevelsejemplo(),
             };
             
-            if (demos[conceptId]) {
-                demos[conceptId]();
+            if (ejemplos[conceptId]) {
+                ejemplos[conceptId]();
             }
         }
 
-        // Demos específicos
-        function showProcessDemo() {
-            alert('🔄 DEMO: Proceso de Desarrollo de Software\n\n1. 📋 Análisis de requisitos\n2. 🎨 Diseño\n3. 💻 Codificación\n4. 🧪 Pruebas\n5. 🚀 Despliegue\n\n¡Observa cómo cada paso transforma las entradas en salidas!');
+        // ejemplos específicos
+        function showProcessejemplo() {
+            alert('🔄 ejemplo: Proceso de Desarrollo de Software\n\n1. 📋 Análisis de requisitos\n2. 🎨 Diseño\n3. 💻 Codificación\n4. 🧪 Pruebas\n5. 🚀 Despliegue\n\n¡Observa cómo cada paso transforma las entradas en salidas!');
         }
 
-        function showInputsDemo() {
+        function showInputsejemplo() {
             const inputs = ['📋 Requisitos del cliente', '💰 Presupuesto', '⏰ Tiempo disponible', '👥 Equipo de trabajo'];
-            alert(`📥 DEMO: Entradas del Proceso\n\n${inputs.join('\n')}\n\n¡Estas son las materias primas de nuestro proceso!`);
+            alert(`📥 ejemplo: Entradas del Proceso\n\n${inputs.join('\n')}\n\n¡Estas son las materias primas de nuestro proceso!`);
         }
 
-        function showOutputsDemo() {
+        function showOutputsejemplo() {
             const outputs = ['✅ Software funcional', '📖 Documentación', '🧪 Casos de prueba', '😊 Cliente satisfecho'];
-            alert(`📤 DEMO: Salidas del Proceso\n\n${outputs.join('\n')}\n\n¡Estos son los resultados que entregamos!`);
+            alert(`📤 ejemplo: Salidas del Proceso\n\n${outputs.join('\n')}\n\n¡Estos son los resultados que entregamos!`);
         }
 
-        function showResourcesDemo() {
+        function showResourcesejemplo() {
             const resources = ['👨‍💻 Desarrolladores', '💻 Computadoras', '🛠️ Herramientas de desarrollo', '☁️ Servidores'];
-            alert(`🔧 DEMO: Recursos Necesarios\n\n${resources.join('\n')}\n\n¡Sin estos recursos, el proceso no puede ejecutarse!`);
+            alert(`🔧 ejemplo: Recursos Necesarios\n\n${resources.join('\n')}\n\n¡Sin estos recursos, el proceso no puede ejecutarse!`);
         }
 
-        function showClientDemo() {
-            alert('👤 DEMO: Identificación de Clientes\n\n🔸 Cliente Interno: Departamento de Marketing\n🔸 Cliente Externo: Usuario final\n\n¡Ambos tienen diferentes expectativas!');
+        function showClientejemplo() {
+            alert('👤 ejemplo: Identificación de Clientes\n\n🔸 Cliente Interno: Departamento de Marketing\n🔸 Cliente Externo: Usuario final\n\n¡Ambos tienen diferentes expectativas!');
         }
 
-        function showExpectationsDemo() {
+        function showExpectationsejemplo() {
             const expectations = ['⚡ Velocidad: Entrega en 30 días', '💎 Calidad: 0 bugs críticos', '💰 Costo: Dentro del presupuesto', '📱 Usabilidad: Interfaz intuitiva'];
-            alert(`⭐ DEMO: Expectativas del Cliente\n\n${expectations.join('\n')}\n\n¡El éxito se mide contra estas expectativas!`);
+            alert(`⭐ ejemplo: Expectativas del Cliente\n\n${expectations.join('\n')}\n\n¡El éxito se mide contra estas expectativas!`);
         }
 
-        function showSequenceDemo() {
-            alert('📋 DEMO: Secuencia de Actividades\n\n1️⃣ Inicio del proyecto\n2️⃣ Planificación\n3️⃣ Ejecución\n4️⃣ Monitoreo\n5️⃣ Cierre\n\n¡El orden importa para el éxito!');
+        function showSequenceejemplo() {
+            alert('📋 ejemplo: Secuencia de Actividades\n\n1️⃣ Inicio del proyecto\n2️⃣ Planificación\n3️⃣ Ejecución\n4️⃣ Monitoreo\n5️⃣ Cierre\n\n¡El orden importa para el éxito!');
         }
 
-        function showKPIDemo() {
+        function showKPIejemplo() {
             const kpis = ['📊 Tiempo de entrega: 25 días', '🐛 Bugs encontrados: 3', '😊 Satisfacción: 95%', '💰 Presupuesto usado: 85%'];
-            alert(`📈 DEMO: Dashboard de KPIs\n\n${kpis.join('\n')}\n\n¡Métricas en tiempo real para la toma de decisiones!`);
+            alert(`📈 ejemplo: Dashboard de KPIs\n\n${kpis.join('\n')}\n\n¡Métricas en tiempo real para la toma de decisiones!`);
         }
 
-        function showTypesDemo() {
-            alert('🏢 DEMO: Clasificación de Procesos\n\n🎯 ESTRATÉGICOS: Planificación empresarial\n⚙️ CRÍTICOS: Desarrollo de productos\n🛠️ DE APOYO: Gestión de RRHH\n\n¡Cada tipo tiene diferente impacto en la organización!');
+        function showTypesejemplo() {
+            alert('🏢 ejemplo: Clasificación de Procesos\n\n🎯 ESTRATÉGICOS: Planificación empresarial\n⚙️ CRÍTICOS: Desarrollo de productos\n🛠️ DE APOYO: Gestión de RRHH\n\n¡Cada tipo tiene diferente impacto en la organización!');
         }
 
-        function showArchitectureDemo() {
-            alert('🏗️ DEMO: Arquitectura Empresarial\n\n🎯 Visión: Ser líder en tecnología\n📋 Procesos alineados con la visión\n📊 Métricas que miden el progreso\n\n¡Todo conectado estratégicamente!');
+        function showArchitectureejemplo() {
+            alert('🏗️ ejemplo: Arquitectura Empresarial\n\n🎯 Visión: Ser líder en tecnología\n📋 Procesos alineados con la visión\n📊 Métricas que miden el progreso\n\n¡Todo conectado estratégicamente!');
         }
 
-        function showMapDemo() {
-            alert('🗺️ DEMO: Mapa de Procesos\n\n📈 ESTRATÉGICOS\n├── Planificación\n└── Innovación\n\n⚙️ OPERATIVOS\n├── Desarrollo\n├── Ventas\n└── Entrega\n\n🛠️ APOYO\n├── RRHH\n└── Finanzas');
+        function showMapejemplo() {
+            alert('🗺️ ejemplo: Mapa de Procesos\n\n📈 ESTRATÉGICOS\n├── Planificación\n└── Innovación\n\n⚙️ OPERATIVOS\n├── Desarrollo\n├── Ventas\n└── Entrega\n\n🛠️ APOYO\n├── RRHH\n└── Finanzas');
         }
 
-        function showLevelsDemo() {
-            alert('📊 DEMO: Niveles de Modelización\n\n🎯 CONCEPTUAL: "Desarrollar software de calidad"\n🔄 LÓGICO: Flujo de actividades y decisiones\n⚙️ FÍSICO: Juan (8h) + María (4h) = $500\n\n¡Cada nivel aporta diferente información!');
+        function showLevelsejemplo() {
+            alert('📊 ejemplo: Niveles de Modelización\n\n🎯 CONCEPTUAL: "Desarrollar software de calidad"\n🔄 LÓGICO: Flujo de actividades y decisiones\n⚙️ FÍSICO: Juan (8h) + María (4h) = $500\n\n¡Cada nivel aporta diferente información!');
         }
 
 
@@ -1021,7 +1021,7 @@
                 <h2>${strategies[strategy].title}</h2>
                 ${strategies[strategy].content}
                 <div style="text-align: center; margin-top: 20px;">
-                    <button class="demo-button" onclick="closeStrategyModal()">
+                    <button class="ejemplo-button" onclick="closeStrategyModal()">
                         <i class="fas fa-check"></i> Entendido
                     </button>
                 </div>
