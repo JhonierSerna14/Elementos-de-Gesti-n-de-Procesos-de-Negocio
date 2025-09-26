@@ -382,6 +382,31 @@
             position: relative;
         }
 
+        /* Estilos para modal de ejemplos enriquecidos */
+        .analogy-box {
+            background: linear-gradient(135deg, #fff8e1, #fff3cd);
+            border-radius: 10px;
+            padding: 12px;
+            border-left: 4px solid #ffb74d;
+        }
+
+        .analogy-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .analogy-item {
+            background: rgba(255,255,255,0.6);
+            padding: 8px 10px;
+            border-radius: 8px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+
         .close {
             position: absolute;
             right: 20px;
@@ -440,63 +465,60 @@
                 font-size: 0.8em;
             }
             
-        .flow-step:hover .flow-step > div {
-            transform: scale(1.05);
-        }
-        
-        .flow-step.completed {
-            opacity: 0.8;
-        }
-        
-        .flow-step.completed::after {
-            content: '✓';
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: #27ae60;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        
-        .flow-step.completed::after {
-            content: '✓';
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: #27ae60;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-        }            .case-study {
-                padding: 20px;
-                margin-top: 20px;
+            .flow-step:hover .flow-step > div {
+                transform: scale(1.05);
             }
             
-            .case-study h2 {
-                font-size: 1.4em;
-                margin-bottom: 15px;
+            /* Estilos más visibles cuando una estrategia está vista */
+            .flow-step.completed {
+                opacity: 1;
+                background: linear-gradient(135deg, rgba(39,174,96,0.06), rgba(39,174,96,0.02));
+                border: 2px solid #27ae60;
+                border-radius: 12px;
+                padding: 12px;
+                transition: all 0.25s ease;
+                box-shadow: 0 6px 18px rgba(39,174,96,0.06);
             }
             
-            .case-study ul {
-                margin-left: 15px;
+            /* Cambiar el círculo interior (icono) a verde cuando está completado */
+            .flow-step.completed > div {
+                background: #27ae60 !important;
+                color: white !important;
+                transform: scale(1.02);
             }
             
-            .case-study li {
-                margin-bottom: 8px;
-                font-size: 0.95em;
+            /* Check circular (ícono) */
+            .flow-step.completed::after {
+                content: '\2713'; /* ✓ */
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                background: #27ae60;
+                color: white;
+                border-radius: 50%;
+                width: 22px;
+                height: 22px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                font-weight: bold;
+                background-image: linear-gradient(180deg, #2ecc71, #27ae60);
+                box-shadow: 0 2px 6px rgba(39,174,96,0.25);
+            }
+            
+            /* Texto 'Visto' junto al check */
+            .flow-step.completed::before {
+                content: 'Visto';
+                position: absolute;
+                top: 34px;
+                right: 8px;
+                background: transparent;
+                color: #27ae60;
+                font-size: 0.75em;
+                font-weight: 600;
+                padding: 2px 6px;
+                border-radius: 6px;
             }
         }
     </style>
@@ -593,6 +615,14 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <div id="benefitContent"></div>
+        </div>
+    </div>
+
+    <!-- Modal para ejemplos enriquecidos -->
+    <div id="exampleModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeExampleModal()">&times;</span>
+            <div id="exampleContent"></div>
         </div>
     </div>
 
@@ -731,7 +761,6 @@
                                 <p>${concept.example}</p>
                             </div>
                             <div class="interactive-ejemplo">
-                                <h4><i class="fas fa-play-circle"></i> ejemplostración Interactiva</h4>
                                 <p>${concept.ejemplo}</p>
                                 <button class="ejemplo-button" onclick="runejemplo('${concept.id}')">
                                     <i class="fas fa-play"></i> Ejecutar ejemplo
@@ -791,66 +820,118 @@
             }
         }
 
-        // ejemplos específicos
+        // ejemplos específicos (ahora muestran modal enriquecido)
+        function openExampleModal(title, htmlContent, conceptId) {
+            const modal = document.getElementById('exampleModal');
+            const content = document.getElementById('exampleContent');
+            let analogyHtml = '';
+            if (conceptId === 'proceso') {
+                analogyHtml = `
+                    <div class="analogy-box">
+                        <h4>Analogía rápida</h4>
+                        <div class="analogy-items">
+                            <div class="analogy-item">
+                                <strong>Panadería:</strong>
+                                <span>entradas = masa + ingredientes; actividades = amasar, fermentar, hornear; salida = pan.</span>
+                            </div>
+                            <div class="analogy-item">
+                                <strong>Línea clara:</strong>
+                                <span>la receta (entradas) + acciones (horneado) → producto (pan).</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            content.innerHTML = `
+                <h2 style="margin-top:0">${title}</h2>
+                <div style="line-height:1.6; margin-bottom:18px">${htmlContent}</div>
+                ${analogyHtml}
+                <div style="text-align:center; margin-top:18px;">
+                    <button class="ejemplo-button" onclick="closeExampleModal()"><i class="fas fa-check"></i> Entendido</button>
+                </div>
+            `;
+            modal.style.display = 'block';
+            window.currentExampleConcept = conceptId || null;
+        }
+
+        function closeExampleModal() {
+            const modal = document.getElementById('exampleModal');
+            modal.style.display = 'none';
+            const conceptId = window.currentExampleConcept;
+            if (conceptId) {
+                markAsCompleted(conceptId);
+                // añadir marca visual si existe tarjeta
+                const card = document.querySelector(`[data-concept="${conceptId}"]`);
+                if (card) confetti(card);
+            }
+            window.currentExampleConcept = null;
+        }
+
         function showProcessejemplo() {
-            alert('🔄 ejemplo: Proceso de Desarrollo de Software\n\n1. 📋 Análisis de requisitos\n2. 🎨 Diseño\n3. 💻 Codificación\n4. 🧪 Pruebas\n5. 🚀 Despliegue\n\n¡Observa cómo cada paso transforma las entradas en salidas!');
-            markAsCompleted('proceso');
+            const html = `
+            `;
+            openExampleModal('🔄 Ejemplo: Proceso de Desarrollo de Software', html, 'proceso');
         }
 
         function showInputsejemplo() {
             const inputs = ['📋 Requisitos del cliente', '💰 Presupuesto', '⏰ Tiempo disponible', '👥 Equipo de trabajo'];
-            alert(`📥 ejemplo: Entradas del Proceso\n\n${inputs.join('\n')}\n\n¡Estas son las materias primas de nuestro proceso!`);
-            markAsCompleted('entradas');
+            const html = `<p>${inputs.join('<br>')}</p><p><em>Estas son las materias primas de nuestro proceso.</em></p>`;
+            openExampleModal('📥 Ejemplo: Entradas del Proceso', html, 'entradas');
         }
 
         function showOutputsejemplo() {
             const outputs = ['✅ Software funcional', '📖 Documentación', '🧪 Casos de prueba', '😊 Cliente satisfecho'];
-            alert(`📤 ejemplo: Salidas del Proceso\n\n${outputs.join('\n')}\n\n¡Estos son los resultados que entregamos!`);
-            markAsCompleted('salidas');
+            const html = `<p>${outputs.join('<br>')}</p><p><em>Estos son los resultados que entregamos.</em></p>`;
+            openExampleModal('📤 Ejemplo: Salidas del Proceso', html, 'salidas');
         }
 
         function showResourcesejemplo() {
             const resources = ['👨‍💻 Desarrolladores', '💻 Computadoras', '🛠️ Herramientas de desarrollo', '☁️ Servidores'];
-            alert(`🔧 ejemplo: Recursos Necesarios\n\n${resources.join('\n')}\n\n¡Sin estos recursos, el proceso no puede ejecutarse!`);
-            markAsCompleted('recursos');
+            const html = `<p>${resources.join('<br>')}</p><p><em>Sin estos recursos, el proceso no puede ejecutarse.</em></p>`;
+            openExampleModal('🔧 Ejemplo: Recursos Necesarios', html, 'recursos');
         }
 
         function showClientejemplo() {
-            alert('👤 ejemplo: Identificación de Clientes\n\n🔸 Cliente Interno: Departamento de Marketing\n🔸 Cliente Externo: Usuario final\n\n¡Ambos tienen diferentes expectativas!');
-            markAsCompleted('cliente');
+            const html = `<p>🔸 <strong>Cliente Interno:</strong> Departamento de Marketing<br>🔸 <strong>Cliente Externo:</strong> Usuario final</p><p><em>Ambos tienen diferentes expectativas.</em></p>`;
+            openExampleModal('👤 Ejemplo: Identificación de Clientes', html, 'cliente');
         }
 
         function showExpectationsejemplo() {
             const expectations = ['⚡ Velocidad: Entrega en 30 días', '💎 Calidad: 0 bugs críticos', '💰 Costo: Dentro del presupuesto', '📱 Usabilidad: Interfaz intuitiva'];
-            alert(`⭐ ejemplo: Expectativas del Cliente\n\n${expectations.join('\n')}\n\n¡El éxito se mide contra estas expectativas!`);
-            markAsCompleted('expectativas');
+            const html = `<p>${expectations.join('<br>')}</p><p><em>El éxito se mide contra estas expectativas.</em></p>`;
+            openExampleModal('⭐ Ejemplo: Expectativas del Cliente', html, 'expectativas');
         }
 
         function showSequenceejemplo() {
-            alert('📋 ejemplo: Secuencia de Actividades\n\n1️⃣ Inicio del proyecto\n2️⃣ Planificación\n3️⃣ Ejecución\n4️⃣ Monitoreo\n5️⃣ Cierre\n\n¡El orden importa para el éxito!');
-            markAsCompleted('secuencia');
+            const html = `<ol><li>Inicio del proyecto</li><li>Planificación</li><li>Ejecución</li><li>Monitoreo</li><li>Cierre</li></ol>`;
+            openExampleModal('📋 Ejemplo: Secuencia de Actividades', html, 'secuencia');
         }
 
         function showKPIejemplo() {
             const kpis = ['📊 Tiempo de entrega: 25 días', '🐛 Bugs encontrados: 3', '😊 Satisfacción: 95%', '💰 Presupuesto usado: 85%'];
-            alert(`📈 ejemplo: Dashboard de KPIs\n\n${kpis.join('\n')}\n\n¡Métricas en tiempo real para la toma de decisiones!`);
-            markAsCompleted('kpis');
+            const html = `<p>${kpis.join('<br>')}</p><p><em>Métricas en tiempo real para la toma de decisiones.</em></p>`;
+            openExampleModal('📈 Ejemplo: Dashboard de KPIs', html, 'kpis');
         }
 
         function showTypesejemplo() {
-            alert('🏢 ejemplo: Clasificación de Procesos\n\n🎯 ESTRATÉGICOS: Planificación empresarial\n⚙️ CRÍTICOS: Desarrollo de productos\n🛠️ DE APOYO: Gestión de RRHH\n\n¡Cada tipo tiene diferente impacto en la organización!');
+            const html = `<p>🎯 <strong>ESTRATÉGICOS:</strong> Planificación empresarial<br>⚙️ <strong>CRÍTICOS:</strong> Desarrollo de productos<br>🛠️ <strong>DE APOYO:</strong> Gestión de RRHH</p>`;
+            openExampleModal('🏢 Ejemplo: Clasificación de Procesos', html, 'tipos');
         }
 
         function showArchitectureejemplo() {
-            alert('🏗️ ejemplo: Arquitectura Empresarial\n\n🎯 Visión: Ser líder en tecnología\n📋 Procesos alineados con la visión\n📊 Métricas que miden el progreso\n\n¡Todo conectado estratégicamente!');
+            const html = `<p>🎯 <strong>Visión:</strong> Ser líder en tecnología<br>📋 <strong>Procesos alineados con la visión</strong><br>📊 <strong>Métricas:</strong> que miden el progreso</p>`;
+            openExampleModal('🏗️ Ejemplo: Arquitectura Empresarial', html, 'arquitectura');
         }
 
         function showMapejemplo() {
-            alert('🗺️ ejemplo: Mapa de Procesos\n\n📈 ESTRATÉGICOS\n├── Planificación\n└── Innovación\n\n⚙️ OPERATIVOS\n├── Desarrollo\n├── Ventas\n└── Entrega\n\n🛠️ APOYO\n├── RRHH\n└── Finanzas');
+            const html = `<pre style="white-space:pre-wrap">📈 ESTRATÉGICOS\n├── Planificación\n└── Innovación\n\n⚙️ OPERATIVOS\n├── Desarrollo\n├── Ventas\n└── Entrega\n\n🛠️ APOYO\n├── RRHH\n└── Finanzas</pre>`;
+            openExampleModal('🗺️ Ejemplo: Mapa de Procesos', html, 'mapa');
         }
 
         function showLevelsejemplo() {
-            alert('📊 ejemplo: Niveles de Modelización\n\n🎯 CONCEPTUAL: "Desarrollar software de calidad"\n🔄 LÓGICO: Flujo de actividades y decisiones\n⚙️ FÍSICO: Juan (8h) + María (4h) = $500\n\n¡Cada nivel aporta diferente información!');
+            const html = `<p>🎯 <strong>CONCEPTUAL:</strong> "Desarrollar software de calidad"<br>🔄 <strong>LÓGICO:</strong> Flujo de actividades y decisiones<br>⚙️ <strong>FÍSICO:</strong> Juan (8h) + María (4h) = $500</p>`;
+            openExampleModal('📊 Ejemplo: Niveles de Modelización', html, 'niveles');
         }
 
 
@@ -1142,12 +1223,16 @@
         window.onclick = function(event) {
             const benefitModal = document.getElementById('benefitModal');
             const strategyModal = document.getElementById('strategyModal');
+            const exampleModal = document.getElementById('exampleModal');
             
             if (event.target === benefitModal) {
                 benefitModal.style.display = 'none';
             }
             if (event.target === strategyModal) {
                 closeStrategyModal(); // Usar la función para marcar como completado
+            }
+            if (event.target === exampleModal) {
+                closeExampleModal();
             }
         };
 
